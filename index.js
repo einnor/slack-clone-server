@@ -5,8 +5,9 @@ import { makeExecutableSchema } from 'graphql-tools';
 
 import typeDefs from './schema';
 import resolvers from './resolvers';
+import models from './models';
 
-export const schema = makeExecutableSchema({
+const schema = makeExecutableSchema({
   typeDefs,
   resolvers,
 });
@@ -18,4 +19,8 @@ const graphqlEndpoint = '/graphql';
 app.use('/graphql', bodyParser.json(), graphqlExpress({ schema }));
 app.use('/graphiql', graphiqlExpress({ endpointURL: graphqlEndpoint }));
 
-app.listen(8080);
+
+// sync() will create all table if they doesn't exist in database
+models.sequelize.sync().then(() => {
+  app.listen(8080);
+});
