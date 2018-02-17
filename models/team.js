@@ -4,15 +4,15 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       unique: true,
     },
-  });
+  }, { underscored: true });
 
   Team.associate = (models) => {
     Team.belongsToMany(models.User, {
-      through: 'member',
+      through: 'members',
       foreignKey: 'teamId',
     });
     Team.belongsToMany(models.User, {
-      through: 'member',
+      through: 'members',
       foreignKey: 'owner',
     });
   };
