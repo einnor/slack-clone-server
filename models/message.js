@@ -3,7 +3,7 @@ export default (sequelize, DataTypes) => {
     text: {
       type: DataTypes.STRING,
     },
-  }, { underscored: true });
+  });
 
   Message.associate = (models) => {
     Message.belongsTo(models.Channel, {
