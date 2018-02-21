@@ -1,14 +1,20 @@
 export default `
 
   type Team {
+    id: Int!
+    name: String!
     owner: User!
     members: [User!]!
-    channel: [Channel!]!
+    channels: [Channel!]!
   }
 
   type CreateTeamResponse {
     ok: Boolean!
     errors: [Error!]
+  }
+
+  type Query {
+    allTeams: [Team!]!
   }
 
   type Mutation {
