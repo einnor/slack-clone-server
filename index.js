@@ -6,12 +6,18 @@ import path from 'path';
 import { fileLoader, mergeTypes, mergeResolvers } from 'merge-graphql-schemas';
 import cors from 'cors';
 import jwt from 'jsonwebtoken';
+import { execute, subscribe } from 'graphql';
+import { PubSub } from 'graphql-subscriptions';
+import { createServer } from 'http';
+import { SubscriptionServer } from 'subscriptions-transport-ws';
 
 import models from './models';
 import { refreshTokens } from './auth';
 
+
 const SECRET = 'hfehjwhtri438593hfeihfjdsl';
 const SECRET2 = 'hfehjwhtri438593hfeihfjdsl9083549305yrioweyruei';
+const PORT = 8080;
 
 const typeDefs = mergeTypes(fileLoader(path.join(__dirname, './schema')));
 
@@ -59,10 +65,25 @@ app.use(graphqlEndpoint, bodyParser.json(), graphqlExpress(req => ({
     SECRET2,
   },
 })));
-app.use('/graphiql', graphiqlExpress({ endpointURL: graphqlEndpoint }));
+app.use('/graphiql', graphiqlExpress({
+  endpointURL: graphqlEndpoint,
+  subscriptionsEndpoint: `ws://localhost:${PORT}/subscriptions`,
+}));
 
+const ws = createServer(app);
 
 // sync() will create all table if they doesn't exist in database
 models.sequelize.sync({}).then(() => {
-  app.listen(8080);
+  app.listen(PORT, () => {
+    // Set up the WebSocket for handling GraphQL subscriptions
+    // eslint-disable-next-line no-new
+    new SubscriptionServer({
+      execute,
+      subscribe,
+      schema,
+    }, {
+      server: ws,
+      path: '/subscriptions',
+    });
+  });
 });
