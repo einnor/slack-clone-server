@@ -6,7 +6,6 @@ export default `
     owner: Int!
     members: [User!]!
     channels: [Channel!]!
-    createdAt: String!
   }
 
   type CreateTeamResponse {
