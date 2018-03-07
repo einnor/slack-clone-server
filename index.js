@@ -7,7 +7,6 @@ import { fileLoader, mergeTypes, mergeResolvers } from 'merge-graphql-schemas';
 import cors from 'cors';
 import jwt from 'jsonwebtoken';
 import { execute, subscribe } from 'graphql';
-import { PubSub } from 'graphql-subscriptions';
 import { createServer } from 'http';
 import { SubscriptionServer } from 'subscriptions-transport-ws';
 
@@ -67,7 +66,6 @@ app.use(graphqlEndpoint, bodyParser.json(), graphqlExpress(req => ({
 })));
 app.use('/graphiql', graphiqlExpress({
   endpointURL: graphqlEndpoint,
-  subscriptionsEndpoint: `ws://localhost:${PORT}/subscriptions`,
 }));
 
 const ws = createServer(app);
