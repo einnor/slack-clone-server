@@ -30,17 +30,27 @@ export default {
       try {
         const message = await models.Message.create({ ...args, userId: user.id });
 
-        const currentUser = await models.User.findOne({ where: { id: user.id } }, { raw: true });
-        pubsub.publish(
-          NEW_CHANNEL_MESSAGE,
-          {
-            channelId: args.channelId,
-            newChannelMessage: {
-              ...message.dataValues,
-              user: currentUser.dataValues,
+        const asyncFunc = async () => {
+          const currentUser = await models.User.findOne({
+            where: {
+              id: user.id,
             },
-          },
-        );
+          });
+
+          pubsub.publish(
+            NEW_CHANNEL_MESSAGE,
+            {
+              channelId: args.channelId,
+              newChannelMessage: {
+                ...message.dataValues,
+                user: currentUser.dataValues,
+              },
+            },
+          );
+        };
+
+        asyncFunc();
+
         return true;
       } catch (err) {
         return false;
