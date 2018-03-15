@@ -59,8 +59,7 @@ app.use(graphqlEndpoint, bodyParser.json(), graphqlExpress(req => ({
   schema,
   context: {
     models,
-    // user: req.user,
-    user: { id: 1 },
+    user: req.user,
     SECRET,
     SECRET2,
   },
@@ -83,26 +82,15 @@ models.sequelize.sync({ }).then(() => {
       schema,
       onConnect: async ({ token, refreshToken }, webSocket) => {
         if (token && refreshToken) {
-          let user = null;
           try {
-            const payload = jwt.verify(token, SECRET);
-            user = payload.user;
+            const { user } = jwt.verify(token, SECRET);
+            return { models, user };
           } catch (err) {
             const newTokens = await refreshTokens(token, refreshToken, models, SECRET, SECRET2);
-            user = newTokens.user;
+            return { models, user: newTokens.user };
           }
-
-          if (!user) {
-            throw new Error('Invalid auth tokens!');
-          }
-
-          // const member = await models.Member.findOne({ where: { teamId: 1, userId: user.id } });
-          // if (!member) {
-          //   throw new Error('Missing auth tokens!');
-          // }
-          return true;
         }
-        throw new Error('Missing auth tokens!');
+        return { models };
       },
     }, {
       server: ws,
