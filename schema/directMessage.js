@@ -6,10 +6,6 @@ export default `
     receiverId: Int!
   }
 
-  type Subscription {
-    newChannelMessage(channelId: Int!): Message!
-  }
-
   type Query {
     directMessages: [DirectMessage!]!
   }
