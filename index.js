@@ -73,7 +73,7 @@ const ws = createServer(app);
 
 // sync() will create all table if they doesn't exist in database
 models.sequelize.sync({ }).then(() => {
-  app.listen(PORT, () => {
+  ws.listen(PORT, () => {
     // Set up the WebSocket for handling GraphQL subscriptions
     // eslint-disable-next-line no-new
     new SubscriptionServer({
