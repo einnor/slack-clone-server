@@ -33,6 +33,25 @@ export const requiresTeamAccess = createResolver(async (
   }
 });
 
+export const directMessageSubscription = createResolver(async (
+  parent, { teamId, userId }, { models, user },
+) => {
+  if (!user || !user.id) {
+    throw new Error('Not authenticated');
+  }
+
+  // check if part of the same team
+  const members = await models.Member.findAll({
+    where: {
+      teamId,
+      [models.sequelize.Op.or]: [{ userId }, { userId: user.id }],
+    },
+  });
+  if (members.length !== 2) {
+    throw new Error('The two users do not belong to the same team');
+  }
+});
+
 export const requiresAdmin = requiresAuth.createResolver((parent, args, { user }) => {
   if (!user.isAdmin) {
     throw new Error('Requires admin access');
