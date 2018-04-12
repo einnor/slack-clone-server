@@ -53,7 +53,9 @@ export default {
         pubsub.publish(
           NEW_DIRECT_MESSAGE,
           {
-            channelId: args.channelId,
+            teamId: args.teamId,
+            senderId: user.id,
+            receiverId: args.receiverId,
             newDirectMessage: {
               ...directMessage.dataValues,
               sender: {

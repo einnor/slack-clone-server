@@ -1,3 +1,3 @@
-import { PubSub, withFilter } from 'graphql-subscriptions';
+import { PubSub } from 'graphql-subscriptions';
 
 export default new PubSub();
