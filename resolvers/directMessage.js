@@ -50,26 +50,19 @@ export default {
       try {
         const directMessage = await models.DirectMessage.create({ ...args, senderId: user.id });
 
-        // const asyncFunc = async () => {
-        //   const currentUser = await models.User.findOne({
-        //     where: {
-        //       id: user.id,
-        //     },
-        //   });
+        pubsub.publish(
+          NEW_DIRECT_MESSAGE,
+          {
+            channelId: args.channelId,
+            newDirectMessage: {
+              ...directMessage.dataValues,
+              sender: {
+                username: user.username,
+              },
+            },
+          },
+        );
 
-        //   pubsub.publish(
-        //     NEW_DIRECT_MESSAGE,
-        //     {
-        //       channelId: args.channelId,
-        //       newChannelMessage: {
-        //         ...message.dataValues,
-        //         user: currentUser.dataValues,
-        //       },
-        //     },
-        //   );
-        // };
-
-        // asyncFunc();
         return true;
       } catch (err) {
         return false;
