@@ -4,13 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --exec babel-node index.js"
+    "start": "nodemon --exec babel-node index.js",
+    "test-server": "./reset_test_db.sh; TEST_DB=slack_test nodemon --exec babel-node index.js",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "axios": "^0.18.0",
     "babel-cli": "^6.26.0",
+    "babel-jest": "^22.4.3",
     "babel-preset-env": "^1.6.1",
     "babel-preset-stage-3": "^6.24.1",
     "eslint": "^4.18.2",
@@ -19,6 +23,7 @@
     "eslint-plugin-import": "^2.9.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.7.0",
+    "jest": "^22.4.3",
     "nodemon": "^1.17.2"
   },
   "dependencies": {
@@ -35,6 +40,7 @@
     "merge-graphql-schemas": "^1.4.0",
     "pg": "^7.4.1",
     "sequelize": "^4.37.0",
-    "subscriptions-transport-ws": "^0.9.6"
+    "subscriptions-transport-ws": "^0.9.6",
+    "xmlhttprequest": "^1.8.0"
   }
 }
