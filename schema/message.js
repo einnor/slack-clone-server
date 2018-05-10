@@ -1,7 +1,7 @@
 export default `
   type Message {
     id: Int!
-    text: String!
+    text: String
     user: User!
     channel: Channel!
     created_at: String!
@@ -9,7 +9,7 @@ export default `
     filetype: String
   }
 
-  type File {
+  input File {
     type: String!
     path: String!
   }
