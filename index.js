@@ -79,9 +79,8 @@ const fileMiddleware = (req, res, next) => {
     }
 
     req.body = document;
-    return next();
+    next();
   });
-  return next();
 };
 
 app.use(addUser);
