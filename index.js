@@ -96,10 +96,13 @@ app.use(graphqlEndpoint, bodyParser.json(), fileMiddleware, graphqlExpress(req =
     SECRET2,
   },
 })));
+
 app.use('/graphiql', graphiqlExpress({
   endpointURL: graphqlEndpoint,
   subscriptionsEndpoint: 'ws://localhost:8080/subscriptions',
 }));
+
+app.use('/files', express.static('files'));
 
 const ws = createServer(app);
 
