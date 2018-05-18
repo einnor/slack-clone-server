@@ -6,7 +6,7 @@ export default {
     getOrCreateDirectMessageChannel: requiresAuth.createResolver(async (parent, { teamId, members }, { models, user }) => {
       members.push(user.id);
       // Check if dm channel already exists eith these members
-      const [data, result] = await models.sequelize.query(`
+      const [data] = await models.sequelize.query(`
         select c.id from channels as c, private_channel_members as pcm
         where pcm.channel_id = c.id
         and c.dm = true
