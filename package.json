@@ -41,7 +41,7 @@
     "merge-graphql-schemas": "^1.4.0",
     "pg": "^7.4.1",
     "sequelize": "^4.37.0",
-    "subscriptions-transport-ws": "^0.9.6",
+    "subscriptions-transport-ws": "^0.9.17",
     "xmlhttprequest": "^1.8.0"
   }
 }
